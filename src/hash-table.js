@@ -1,22 +1,23 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 const { LimitedArray, getIndexBelowMax } = require('./hash-table-helpers');
+const { LinkedList } = require('./hash-table-helpers'); // added LinkedList to the helper file
 
 class HashTable {
   constructor(limit = 8) {
     this.limit = limit;
-    this.storage = new LimitedArray(this.limit);
+    this.storage = new LimitedArray(); 
     // Do not modify anything inside of the constructor
   }
 
   resize() {
     this.limit *= 2;
     const oldStorage = this.storage;
-    this.storage = new LimitedArray(this.limit);
+    this.storage = new LimitedArray();
     oldStorage.each((bucket) => {
       if (!bucket) return;
       bucket.forEach((pair) => {
-        this.insert(pair[0], pair[1]);
+        this.insert(pair[0], pair[1]); 
       });
     });
   }
@@ -36,8 +37,7 @@ class HashTable {
   insert(key, value) {
     if (this.capacityIsFull()) this.resize();
     const index = getIndexBelowMax(key.toString(), this.limit);
-    let bucket = this.storage.get(index) || [];
-
+    let bucket = this.storage.get(index) || [];// add new linked list instead of empty array
     bucket = bucket.filter(item => item[0] !== key);
     bucket.push([key, value]);
     this.storage.set(index, bucket);

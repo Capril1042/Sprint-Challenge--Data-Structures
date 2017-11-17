@@ -8,9 +8,10 @@ class LimitedArray {
   }
 
   checkLimit(index) {
-    if (typeof index !== 'number') throw new Error('The supplied index needs to be a number');
+    if (typeof index !== "number")
+      throw new Error("The supplied index needs to be a number");
     if (this.limit <= index) {
-      throw new Error('The supplied index lies out of the array\'s bounds');
+      throw new Error("The supplied index lies out of the array's bounds");
     }
   }
 
@@ -34,6 +35,38 @@ class LimitedArray {
     this.storage[index] = value;
   }
 }
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+  }
+  addToTail(value) {
+    const node = {
+      value,
+      next: null
+    };
+    if (!this.head) {
+      this.head = node;
+      this.tail = node;
+    } else {
+      this.tail.next = node;
+      this.tail = node;
+    }
+  }
+  removeHead() {
+    const current = this.head.value;
+    this.head = this.head.next;
+    return current;
+  }
+  contains(value) {
+    const check = function check(node, criterion) {
+      if (node.next === null) return false;
+      if (node.value === criterion) return true;
+      return check(node.next, criterion);
+    };
+    return check(this.head, value);
+  }
+}
 /* eslint-disable no-bitwise, operator-assignment */
 // This is hash function you'll be using to hash keys
 // There's some bit-shifting magic going on here, but essentially, all it is doing is performing the modulo operator
@@ -51,5 +84,5 @@ const getIndexBelowMax = (str, max) => {
 
 module.exports = {
   LimitedArray,
-  getIndexBelowMax,
+  getIndexBelowMax
 };
